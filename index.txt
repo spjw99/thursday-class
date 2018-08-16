@@ -45,7 +45,7 @@
 
 
 
-//Try encode url and data
+//Tried encryt url and data
 <!DOCTYPE html>
 <html lang="en">
 <head>
