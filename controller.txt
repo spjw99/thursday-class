@@ -1,0 +1,34 @@
+//php code
+//Save value via POST
+$mode //tournaments
+$round //r3
+$user_id //123
+$artist_id //12
+
+if($mode=="tournaments"){
+    $referer=$_SERVER['HTTP_REFERER'];
+    if(strpos($referer,"allkpop.com")!==false){//from my site
+        //check each round of tournament is ended or not
+        //total vote count per day
+        $tc_cnt=getcookie('total_vote_count_per_day');
+        
+        //check how many votes a user made for same bracket in a day
+        $chk=DBarray("SELECT count(*) AS cnt FROM akp_tournaments_track WHERE ip='$user_ip' AND round='$current_round' AND (vote_idx=$artist_id OR vote_idx=$pair_idx) AND search_ts>$oneday");
+        if($chk['cnt']>=15||$tc_cnt>=15){//check vote exceed limit per bracket or per day
+            $msg[0]=-3;
+            echo encode_json($msg);exit;
+        }else{
+            //update total vote count for artist
+            //UPDATE akp_tournaments SET r3=r3+1 WHERE idx=$artist_id
+            //INSERT INTO akp_tournaments_track (ip,round,vote_idx,write_date,search_ts) VALUES ('$user_ip','$current_round','$artist_id',now(),'$now')
+            $msg[0]=1;
+            echo encode_json($msg);exit;
+        }
+    }else{//coming from other site
+        //block
+        //error_log("[OTHER SERVER] ".$user_ip." : ".$artist_id." : ".date('Y-m-d h:i:s')." : ".$referer."\n", 3, "/usr/share/nginx/html/bot_try.log");
+        echo encode_json($msg);exit;
+    }
+}else if(){
+
+}...
